@@ -1,0 +1,28 @@
+{{define "title"}}
+Login page - ElectricCompany
+{{end}}
+
+{{define "body"}}
+<main class="container">
+    <article class="grid">
+        <div>
+            <hgroup>
+                <h1>Login</h1>
+                <h2></h2>
+            </hgroup>
+            <form>
+                <label for="username">
+                    Username
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                </label>
+                <label for="password">
+                    Password
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </label>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        <div class="hero-img"></div>
+    </article>
+</main>
+{{end}}
