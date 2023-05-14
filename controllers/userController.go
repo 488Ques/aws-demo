@@ -13,15 +13,11 @@ func AllUsers(c echo.Context) error {
 	db := config.DB()
 
 	if err := db.Where("user_status <> ?", "0").Find(&users).Error; err != nil {
-		data := map[string]interface{}{
-			"message": err.Error(),
-		}
+		data := buildErrorJSON(err)
 		return c.JSON(http.StatusInternalServerError, data)
 	}
 
-	response := map[string]interface{}{
-		"data": users,
-	}
+	response := buildResponseJSON(users)
 	return c.JSON(http.StatusOK, response)
 }
 
@@ -30,9 +26,7 @@ func CreateUser(c echo.Context) error {
 	db := config.DB()
 
 	if err := c.Bind(u); err != nil {
-		data := map[string]interface{}{
-			"message": err.Error(),
-		}
+		data := buildErrorJSON(err)
 		return c.JSON(http.StatusInternalServerError, data)
 	}
 
@@ -43,15 +37,11 @@ func CreateUser(c echo.Context) error {
 	}
 
 	if err := db.Create(&user).Error; err != nil {
-		data := map[string]interface{}{
-			"message": err.Error(),
-		}
+		data := buildErrorJSON(err)
 		return c.JSON(http.StatusInternalServerError, data)
 	}
 
-	response := map[string]interface{}{
-		"data": user,
-	}
+	response := buildResponseJSON(user)
 	return c.JSON(http.StatusOK, response)
 }
 
@@ -62,55 +52,39 @@ func UpdateUser(c echo.Context) error {
 
 	// Binding data
 	if err := c.Bind(u); err != nil {
-		data := map[string]interface{}{
-			"message": err.Error(),
-		}
-
+		data := buildErrorJSON(err)
 		return c.JSON(http.StatusInternalServerError, data)
 	}
 
 	existingUser := new(models.User)
-
 	if err := db.First(&existingUser, id).Error; err != nil {
-		data := map[string]interface{}{
-			"message": err.Error(),
-		}
-
+		data := buildErrorJSON(err)
 		return c.JSON(http.StatusNotFound, data)
 	}
 
 	existingUser.Username = u.Username
 	existingUser.Password = u.Password
 	if err := db.Save(&existingUser).Error; err != nil {
-		data := map[string]interface{}{
-			"message": err.Error(),
-		}
-
+		data := buildErrorJSON(err)
 		return c.JSON(http.StatusInternalServerError, data)
 	}
 
-	response := map[string]interface{}{
-		"data": existingUser,
-	}
+	response := buildResponseJSON(existingUser)
 
 	return c.JSON(http.StatusOK, response)
 }
 
 func GetUser(c echo.Context) error {
 	id := c.Param("id")
-	u := new(models.User)
+	user := new(models.User)
 	db := config.DB()
 
-	if err := db.First(&u, id).Error; err != nil {
-		data := map[string]interface{}{
-			"message": err.Error(),
-		}
+	if err := db.First(&user, id).Error; err != nil {
+		data := buildErrorJSON(err)
 		return c.JSON(http.StatusNotFound, data)
 	}
 
-	response := map[string]interface{}{
-		"data": u,
-	}
+	response := buildResponseJSON(user)
 
 	return c.JSON(http.StatusOK, response)
 }
@@ -121,17 +95,13 @@ func DeleteUser(c echo.Context) error {
 	db := config.DB()
 
 	if err := db.First(&user, id).Error; err != nil {
-		data := map[string]interface{}{
-			"message": err.Error(),
-		}
+		data := buildErrorJSON(err)
 		return c.JSON(http.StatusNotFound, data)
 	}
 
 	user.UserStatus = false
 	if err := db.Save(user).Error; err != nil {
-		data := map[string]interface{}{
-			"message": err.Error(),
-		}
+		data := buildErrorJSON(err)
 		return c.JSON(http.StatusInternalServerError, data)
 	}
 
