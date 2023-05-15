@@ -1,13 +1,14 @@
 package main
 
 import (
+	"github.com/488Ques/aws-demo/models"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
 
 type templateData struct {
 	IsAuthenticated bool
-	SomeRandStr     string
+	Inventory       *[]models.Inventory
 }
 
 func addDefaultData(td *templateData, c echo.Context) error {

@@ -3,43 +3,37 @@ Inventory - ElectricCompany
 {{end}}
 
 {{define "body"}}
-<main class="container">
-    <section id="tables">
-        <h2>Inventory [id]</h2>
+<main>
+    <section id="tables" class="container">
+        <h2>My inventory</h2>
         <figure>
             <table role="grid">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Product name</th>
-                        <th scope="col">Product quantity</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {{range $i, $p := .Inventory}}
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <th scope="row">{{$i}}</th>
+                        <td>{{$p.ProductName}}</td>
+                        <td>{{$p.ProductQuantity}}</td>
+                        <td>
+                            <a href="#" style="margin-right: 0.2em;">Edit</a>
+                            <a href="#">Delete</a>
+                        </td>
                     </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
+                    {{end}}
                 </tbody>
             </table>
         </figure>
+        <div>
+            <button>Add</button>
+        </div>
     </section>
 </main>
 {{end}}

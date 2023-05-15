@@ -18,7 +18,11 @@ func LoginForm(c echo.Context) error {
 }
 
 func InventoryHandler(c echo.Context) error {
-	return c.Render(http.StatusOK, "inventory.html", nil)
+	sess, _ := session.Get("session", c)
+	staffID := sess.Values["staff_id"].(int)
+	products := controllers.GetStaffInventory(staffID)
+
+	return c.Render(http.StatusOK, "inventory.html", &templateData{Inventory: &products})
 }
 
 func LoginUser(c echo.Context) error {

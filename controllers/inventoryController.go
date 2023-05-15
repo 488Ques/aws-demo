@@ -113,3 +113,12 @@ func DeleteInventory(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, response)
 }
+
+func GetStaffInventory(staffID int) []models.Inventory {
+	db := config.DB()
+	products := []models.Inventory{}
+
+	db.Model(&models.Inventory{}).Joins("inner join staffs on staffs.truck_id = inventory.truck_id").Where("staffs.id = ?", staffID).Find(&products)
+
+	return products
+}
