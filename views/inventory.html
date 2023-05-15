@@ -13,6 +13,7 @@ Inventory - ElectricCompany
                         <th scope="col">#</th>
                         <th scope="col">Product name</th>
                         <th scope="col">Quantity</th>
+                        <th scope="col">Minimum quantity</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -22,6 +23,7 @@ Inventory - ElectricCompany
                         <th scope="row">{{$i}}</th>
                         <td>{{$p.ProductName}}</td>
                         <td>{{$p.ProductQuantity}}</td>
+                        <td>{{$p.MinimumQuantity}}</td>
                         <td>
                             <a href="#" style="margin-right: 0.2em;">Edit</a>
                             <a href="#">Delete</a>
@@ -32,7 +34,7 @@ Inventory - ElectricCompany
             </table>
         </figure>
         <div>
-            <button>Add</button>
+            <a href="/inventory/add"><button>Add</button></a>
         </div>
     </section>
 </main>

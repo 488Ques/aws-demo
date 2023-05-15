@@ -114,6 +114,16 @@ func DeleteInventory(c echo.Context) error {
 	return c.JSON(http.StatusOK, response)
 }
 
+func AddProduct(p *models.Inventory) (int, error) {
+	db := config.DB()
+
+	if err := db.Create(p).Error; err != nil {
+		return 0, err
+	}
+
+	return p.ID, nil
+}
+
 func GetStaffInventory(staffID int) []models.Inventory {
 	db := config.DB()
 	products := []models.Inventory{}

@@ -41,6 +41,8 @@ func (t *TemplateRegistry) Render(w io.Writer, name string, data interface{}, c 
 func main() {
 	e := echo.New()
 
+	e.Debug = true
+
 	// Serve static files
 	e.Static("/static", "static")
 

@@ -3,7 +3,6 @@ package main
 import (
 	"net/http"
 
-	"github.com/488Ques/aws-demo/controllers"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
@@ -14,7 +13,10 @@ func Routes(e *echo.Echo) {
 	e.GET("/inventory", InventoryHandler)
 
 	e.GET("/whoami", func(c echo.Context) error {
-		sess, _ := session.Get("session", c)
+		sess, err := session.Get("session", c)
+		if err != nil {
+			return c.String(http.StatusUnauthorized, err.Error())
+		}
 		userID := sess.Values["user_id"].(int)
 		staffID := sess.Values["staff_id"]
 		username := sess.Values["username"]
@@ -31,55 +33,21 @@ func Routes(e *echo.Echo) {
 
 	// User routes
 	userRoute := e.Group("/user")
-	userRoute.GET("/", controllers.AllUsers)
-	userRoute.POST("/", controllers.CreateUser)
 	userRoute.GET("/login", LoginForm)
 	userRoute.POST("/login", LoginUser)
 	userRoute.GET("/logout", LogoutUser)
-	userRoute.GET("/:id", controllers.GetUser)
-	userRoute.PUT("/:id", controllers.UpdateUser)
-	userRoute.DELETE("/:id", controllers.DeleteUser)
 
 	// Truck routes
-	truckRoute := e.Group("/truck")
-	truckRoute.GET("/", controllers.AllTrucks)
-	truckRoute.POST("/", controllers.CreateTruck)
-	truckRoute.GET("/:id", controllers.GetTruck)
-	truckRoute.PUT("/:id", controllers.UpdateTruck)
-	truckRoute.DELETE("/:id", controllers.DeleteTruck)
+	// truckRoute := e.Group("/truck")
 
 	// Staff routes
-	staffRoute := e.Group("/staff")
-	staffRoute.GET("/", controllers.AllStaffs)
-	staffRoute.POST("/", controllers.CreateStaff)
-	staffRoute.GET("/:id", controllers.GetStaff)
-	staffRoute.PUT("/:id", controllers.UpdateStaff)
-	staffRoute.DELETE("/:id", controllers.DeleteStaff)
+	// staffRoute := e.Group("/staff")
 
 	// Inventory routes
 	inventoryRoute := e.Group("/inventory")
-	inventoryRoute.GET("/", controllers.AllInventory)
-	inventoryRoute.POST("/", controllers.CreateInventory)
-	inventoryRoute.GET("/add", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "addProduct.html", nil)
-	})
-	inventoryRoute.GET("/:id", controllers.GetInventory)
-	inventoryRoute.PUT("/:id", controllers.UpdateInventory)
-	inventoryRoute.DELETE("/:id", controllers.DeleteInventory)
+	inventoryRoute.GET("/add", AddProductForm)
+	inventoryRoute.POST("/add", AddProduct)
 
 	// Company routes
-	companyRoute := e.Group("/company")
-	companyRoute.GET("/", controllers.AllCompanies)
-	companyRoute.POST("/", controllers.CreateCompany)
-	companyRoute.GET("/:id", controllers.GetCompany)
-	companyRoute.PUT("/:id", controllers.UpdateCompany)
-	companyRoute.DELETE("/:id", controllers.DeleteCompany)
-
-	// TODO: Delete this in production
-	// Book routes
-	bookRoute := e.Group("/book")
-	bookRoute.POST("/", controllers.CreateBook)
-	bookRoute.GET("/:id", controllers.GetBook)
-	bookRoute.PUT("/:id", controllers.UpdateBook)
-	bookRoute.DELETE("/:id", controllers.DeleteBook)
+	// companyRoute := e.Group("/company")
 }

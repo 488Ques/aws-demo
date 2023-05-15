@@ -2,8 +2,10 @@ package main
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/488Ques/aws-demo/controllers"
+	"github.com/488Ques/aws-demo/models"
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -23,6 +25,38 @@ func InventoryHandler(c echo.Context) error {
 	products := controllers.GetStaffInventory(staffID)
 
 	return c.Render(http.StatusOK, "inventory.html", &templateData{Inventory: &products})
+}
+
+func AddProductForm(c echo.Context) error {
+	return c.Render(http.StatusOK, "addProduct.html", nil)
+}
+
+func AddProduct(c echo.Context) error {
+	productName := c.FormValue("product_name")
+	productQuantity := c.FormValue("product_quantity")
+	minimumQuantity := c.FormValue("minimum_quantity")
+	truckID := c.FormValue("truck_id")
+	companyID := c.FormValue("company_id")
+
+	quantity, _ := strconv.Atoi(productQuantity)
+	minimum, _ := strconv.Atoi(minimumQuantity)
+	truckid, _ := strconv.Atoi(truckID)
+	companyid, _ := strconv.Atoi(companyID)
+
+	product := &models.Inventory{
+		ProductName:     productName,
+		ProductQuantity: quantity,
+		MinimumQuantity: minimum,
+		TruckID:         truckid,
+		CompanyID:       companyid,
+	}
+
+	_, err := controllers.AddProduct(product)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.Redirect(http.StatusSeeOther, "/inventory")
 }
 
 func LoginUser(c echo.Context) error {
