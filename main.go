@@ -7,6 +7,8 @@ import (
 	"io"
 
 	"github.com/488Ques/aws-demo/config"
+	"github.com/gorilla/sessions"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -27,6 +29,7 @@ func (t *TemplateRegistry) Render(w io.Writer, name string, data interface{}, c 
 func main() {
 	e := echo.New()
 
+	// Server static files
 	e.Static("/static", "static")
 
 	// Renderer
@@ -40,6 +43,8 @@ func main() {
 
 	// Middlewares
 	e.Use(middleware.Recover())
+	secret := "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge"
+	e.Use(session.Middleware(sessions.NewCookieStore([]byte(secret))))
 
 	// Routes
 	Routes(e)

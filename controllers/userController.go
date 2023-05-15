@@ -9,6 +9,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+var ErrInvalidCredentials = errors.New("invalid credentials")
+
 func AllUsers(c echo.Context) error {
 	var users []*models.User
 	db := config.DB()
@@ -90,23 +92,6 @@ func GetUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, response)
 }
 
-var ErrInvalidCredentials = errors.New("invalid credentials")
-
-func Authenticate(username, password string) (int, error) {
-	user := new(models.User)
-	db := config.DB()
-
-	if err := db.Where("username = ?", username).First(&user).Error; err != nil {
-		return 0, err
-	}
-
-	if user.Password != password {
-		return 0, ErrInvalidCredentials
-	}
-
-	return user.ID, nil
-}
-
 func DeleteUser(c echo.Context) error {
 	id := c.Param("id")
 	user := new(models.User)
@@ -127,4 +112,19 @@ func DeleteUser(c echo.Context) error {
 		"message": "user ID " + id + " has been deleted",
 	}
 	return c.JSON(http.StatusOK, response)
+}
+
+func Authenticate(username, password string) (int, error) {
+	user := new(models.User)
+	db := config.DB()
+
+	if err := db.Where("username = ?", username).First(&user).Error; err != nil {
+		return 0, err
+	}
+
+	if user.Password != password {
+		return 0, ErrInvalidCredentials
+	}
+
+	return user.ID, nil
 }
