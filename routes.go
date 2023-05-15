@@ -35,13 +35,21 @@ func Routes(e *echo.Echo) {
 	staffRoute.PUT("/:id", controllers.UpdateStaff)
 	staffRoute.DELETE("/:id", controllers.DeleteStaff)
 
-	// Staff routes
+	// Inventory routes
 	inventoryRoute := e.Group("/inventory")
 	inventoryRoute.GET("/", controllers.AllInventory)
 	inventoryRoute.POST("/", controllers.CreateInventory)
 	inventoryRoute.GET("/:id", controllers.GetInventory)
 	inventoryRoute.PUT("/:id", controllers.UpdateInventory)
 	inventoryRoute.DELETE("/:id", controllers.DeleteInventory)
+
+	// Company routes
+	companyRoute := e.Group("/company")
+	companyRoute.GET("/", controllers.AllCompanies)
+	companyRoute.POST("/", controllers.CreateCompany)
+	companyRoute.GET("/:id", controllers.GetCompany)
+	companyRoute.PUT("/:id", controllers.UpdateCompany)
+	companyRoute.DELETE("/:id", controllers.DeleteCompany)
 
 	// TODO: Delete this in production
 	// Example routes
