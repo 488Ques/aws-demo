@@ -23,7 +23,18 @@ func (t *TemplateRegistry) Render(w io.Writer, name string, data interface{}, c 
 		err := errors.New("Template not found: " + name)
 		return err
 	}
-	return tmpl.ExecuteTemplate(w, "base.html", data)
+
+	// Add default data passed to templates
+	td, ok := data.(*templateData)
+	if !ok {
+		td = new(templateData)
+	}
+	err := addDefaultData(td, c)
+	if err != nil {
+		return err
+	}
+
+	return tmpl.ExecuteTemplate(w, "base.html", td)
 }
 
 func main() {
@@ -42,6 +53,9 @@ func main() {
 	}
 
 	// Middlewares
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "method=${method}, uri=${uri}, status=${status}, error=${error}\n",
+	}))
 	e.Use(middleware.Recover())
 	secret := "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge"
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte(secret))))
