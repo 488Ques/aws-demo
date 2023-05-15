@@ -1,3 +1,5 @@
+# In MySQL, a value of zero is considered false. Nonzero values are considered true.
+
 # Tài khoản nhân viên
 - Có quyền chỉnh sửa (thêm, sửa, xóa, tăng giảm số lượng) các sản phẩm trong kho của xe tải mà nhân viên đó phụ trách và chỉ có quyền xem các sản phẩm trong kho khác
 - Có chức năng tạo đơn hàng xuất kho
