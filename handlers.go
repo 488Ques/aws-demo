@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/488Ques/aws-demo/controllers"
@@ -44,5 +43,20 @@ func LoginUser(c echo.Context) error {
 	sess.Values["authUserID"] = id
 	sess.Save(c.Request(), c.Response())
 
-	return c.String(http.StatusOK, fmt.Sprintf("User ID is %d\n", id))
+	return c.Redirect(http.StatusSeeOther, "/")
+}
+
+func LogoutUser(c echo.Context) error {
+	sess, err := session.Get("session", c)
+	if err != nil {
+		return err
+	}
+	sess.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   -1,
+		HttpOnly: true,
+	}
+	sess.Save(c.Request(), c.Response())
+
+	return c.Redirect(http.StatusSeeOther, "/")
 }

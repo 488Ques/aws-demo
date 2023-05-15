@@ -18,6 +18,13 @@
                 <a href="/" class="contrast"><strong>ElectricCompany</strong></a>
             </li>
         </ul>
+        {{if .IsAuthenticated}}
+        <ul>
+            <li>
+                <a href="/user/logout">Logout</a>
+            </li>
+        </ul>
+        {{else}}
         <ul>
             <li>
                 <a href="/user/login">Login</a>
@@ -26,6 +33,7 @@
                 <a href="#">Sign up</a>
             </li>
         </ul>
+        {{end}}
     </nav>
 
     {{template "body" .}}

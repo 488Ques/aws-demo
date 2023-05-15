@@ -10,12 +10,22 @@ func Routes(e *echo.Echo) {
 	e.GET("/", HomeHandler)
 	e.GET("/inventory", InventoryHandler)
 
+	// e.GET("/whoami", func(c echo.Context) error {
+	// 	sess, err := session.Get("session", c)
+	// 	if err != nil {
+	// 		return err
+	// 	}
+
+	// 	return c.JSON(http.StatusOK, sess.Values["name"])
+	// })
+
 	// User routes
 	userRoute := e.Group("/user")
 	userRoute.GET("/", controllers.AllUsers)
 	userRoute.POST("/", controllers.CreateUser)
 	userRoute.GET("/login", LoginForm)
 	userRoute.POST("/login", LoginUser)
+	userRoute.GET("/logout", LogoutUser)
 	userRoute.GET("/:id", controllers.GetUser)
 	userRoute.PUT("/:id", controllers.UpdateUser)
 	userRoute.DELETE("/:id", controllers.DeleteUser)
