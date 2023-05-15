@@ -60,6 +60,9 @@ func Routes(e *echo.Echo) {
 	inventoryRoute := e.Group("/inventory")
 	inventoryRoute.GET("/", controllers.AllInventory)
 	inventoryRoute.POST("/", controllers.CreateInventory)
+	inventoryRoute.GET("/add", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "addProduct.html", nil)
+	})
 	inventoryRoute.GET("/:id", controllers.GetInventory)
 	inventoryRoute.PUT("/:id", controllers.UpdateInventory)
 	inventoryRoute.DELETE("/:id", controllers.DeleteInventory)

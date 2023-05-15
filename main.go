@@ -41,7 +41,7 @@ func (t *TemplateRegistry) Render(w io.Writer, name string, data interface{}, c 
 func main() {
 	e := echo.New()
 
-	// Server static files
+	// Serve static files
 	e.Static("/static", "static")
 
 	// Renderer
@@ -49,6 +49,7 @@ func main() {
 	templates["home.html"] = template.Must(template.ParseFiles("views/home.html", "views/base.html"))
 	templates["login.html"] = template.Must(template.ParseFiles("views/login.html", "views/base.html"))
 	templates["inventory.html"] = template.Must(template.ParseFiles("views/inventory.html", "views/base.html"))
+	templates["addProduct.html"] = template.Must(template.ParseFiles("views/addProduct.html", "views/base.html"))
 	e.Renderer = &TemplateRegistry{
 		templates: templates,
 	}
