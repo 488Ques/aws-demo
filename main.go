@@ -11,6 +11,7 @@ import (
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/gommon/log"
 )
 
 type TemplateRegistry struct {
@@ -56,7 +57,12 @@ func main() {
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}, error=${error}\n",
 	}))
-	e.Use(middleware.Recover())
+
+	e.Use(middleware.RecoverWithConfig(middleware.RecoverConfig{
+		StackSize: 1 << 10, // 1 KB
+		LogLevel:  log.ERROR,
+	}))
+
 	secret := "s6Ndh+pPbnzHbS*+9Pk8qGWhTzbpa@ge"
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte(secret))))
 
