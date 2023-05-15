@@ -114,17 +114,19 @@ func DeleteUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, response)
 }
 
-func Authenticate(username, password string) (int, error) {
+func Authenticate(username, password string) (*models.User, error) {
 	user := new(models.User)
 	db := config.DB()
 
-	if err := db.Where("username = ?", username).First(&user).Error; err != nil {
-		return 0, err
+	if err := db.Where("username = ? AND user_status <> ?", username, 0).First(&user).Error; err != nil {
+		return nil, err
 	}
 
 	if user.Password != password {
-		return 0, ErrInvalidCredentials
+		return nil, ErrInvalidCredentials
 	}
 
-	return user.ID, nil
+	user.Password = ""
+
+	return user, nil
 }

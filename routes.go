@@ -1,7 +1,10 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/488Ques/aws-demo/controllers"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
 
@@ -10,14 +13,21 @@ func Routes(e *echo.Echo) {
 	e.GET("/", HomeHandler)
 	e.GET("/inventory", InventoryHandler)
 
-	// e.GET("/whoami", func(c echo.Context) error {
-	// 	sess, err := session.Get("session", c)
-	// 	if err != nil {
-	// 		return err
-	// 	}
+	e.GET("/whoami", func(c echo.Context) error {
+		sess, _ := session.Get("session", c)
+		userID := sess.Values["user_id"].(int)
+		staffID := sess.Values["staff_id"]
+		username := sess.Values["username"]
+		companyID := sess.Values["company_id"]
 
-	// 	return c.JSON(http.StatusOK, sess.Values["name"])
-	// })
+		data := map[string]any{
+			"user_id":    userID,
+			"staff_id":   staffID,
+			"username":   username,
+			"company_id": companyID,
+		}
+		return c.JSON(http.StatusOK, data)
+	})
 
 	// User routes
 	userRoute := e.Group("/user")

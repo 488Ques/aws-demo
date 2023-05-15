@@ -25,7 +25,7 @@ func LoginUser(c echo.Context) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")
 
-	id, err := controllers.Authenticate(username, password)
+	user, err := controllers.Authenticate(username, password)
 	if err != nil {
 		return c.String(http.StatusUnauthorized, err.Error())
 	}
@@ -40,7 +40,10 @@ func LoginUser(c echo.Context) error {
 		MaxAge:   86400, // = 1 day
 		HttpOnly: true,
 	}
-	sess.Values["authUserID"] = id
+	sess.Values["user_id"] = user.ID
+	sess.Values["staff_id"] = user.StaffID
+	sess.Values["username"] = user.Username
+	sess.Values["company_id"] = user.CompanyID
 	sess.Save(c.Request(), c.Response())
 
 	return c.Redirect(http.StatusSeeOther, "/")

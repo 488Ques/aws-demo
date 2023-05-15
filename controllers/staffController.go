@@ -112,3 +112,17 @@ func DeleteStaff(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, response)
 }
+
+type Result struct {
+	ProductName     string
+	ProductQuantity int
+}
+
+func GetStaffInventory(id int) error {
+	db := config.DB()
+	results := []Result{}
+
+	db.Model(&models.Staff{}).Select("inventory.product_name, inventory.product_quantity").Joins("inner join inventory on staffs.truck_id = inventory.truck_id").Find(results)
+
+	return nil
+}

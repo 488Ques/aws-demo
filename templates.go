@@ -25,7 +25,7 @@ func isAuthenticated(c echo.Context) (bool, error) {
 		return false, err
 	}
 
-	if sess.Values["authUserID"] == nil {
+	if sess.Values["user_id"] == nil {
 		return false, nil
 	}
 	return true, nil
