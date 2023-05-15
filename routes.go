@@ -8,13 +8,14 @@ import (
 func Routes(e *echo.Echo) {
 	// UI routes
 	e.GET("/", HomeHandler)
-	e.GET("/login", LoginHandler)
 	e.GET("/inventory", InventoryHandler)
 
 	// User routes
 	userRoute := e.Group("/user")
 	userRoute.GET("/", controllers.AllUsers)
 	userRoute.POST("/", controllers.CreateUser)
+	userRoute.GET("/login", LoginForm)
+	userRoute.POST("/login", LoginUser)
 	userRoute.GET("/:id", controllers.GetUser)
 	userRoute.PUT("/:id", controllers.UpdateUser)
 	userRoute.DELETE("/:id", controllers.DeleteUser)
@@ -52,7 +53,7 @@ func Routes(e *echo.Echo) {
 	companyRoute.DELETE("/:id", controllers.DeleteCompany)
 
 	// TODO: Delete this in production
-	// Example routes
+	// Book routes
 	bookRoute := e.Group("/book")
 	bookRoute.POST("/", controllers.CreateBook)
 	bookRoute.GET("/:id", controllers.GetBook)
