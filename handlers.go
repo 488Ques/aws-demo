@@ -107,7 +107,7 @@ func EditProduct(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
 
-	if product.ProductQuantity < product.MinimumQuantity {
+	if quantity < minimum {
 		twilio_helper.CreateMessage(fmt.Sprintf("Product %s in truck ID %s is going to run out of stock", productName, truckID))
 	}
 
