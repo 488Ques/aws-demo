@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/488Ques/aws-demo/controllers"
 	"github.com/488Ques/aws-demo/models"
+	"github.com/488Ques/aws-demo/twilio_helper"
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -103,6 +105,10 @@ func EditProduct(c echo.Context) error {
 	err = controllers.UpdateProduct(product)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
+	}
+
+	if product.ProductQuantity < product.MinimumQuantity {
+		twilio_helper.CreateMessage(fmt.Sprintf("Product %s in truck ID %s is going to run out of stock", productName, truckID))
 	}
 
 	return c.Redirect(http.StatusSeeOther, "/inventory")
