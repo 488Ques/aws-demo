@@ -52,6 +52,7 @@ func main() {
 	templates["login.html"] = template.Must(template.ParseFiles("views/login.html", "views/base.html"))
 	templates["inventory.html"] = template.Must(template.ParseFiles("views/inventory.html", "views/base.html"))
 	templates["addProduct.html"] = template.Must(template.ParseFiles("views/addProduct.html", "views/base.html"))
+	templates["editProduct.html"] = template.Must(template.ParseFiles("views/editProduct.html", "views/base.html"))
 	e.Renderer = &TemplateRegistry{
 		templates: templates,
 	}

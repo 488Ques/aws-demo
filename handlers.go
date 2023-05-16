@@ -49,9 +49,58 @@ func AddProduct(c echo.Context) error {
 		MinimumQuantity: minimum,
 		TruckID:         truckid,
 		CompanyID:       companyid,
+		InventoryStatus: true,
 	}
 
 	_, err := controllers.AddProduct(product)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.Redirect(http.StatusSeeOther, "/inventory")
+}
+
+func EditProductForm(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+	product, err := controllers.GetProduct(id)
+	if err != nil {
+		return c.String(http.StatusNotFound, err.Error())
+	}
+
+	return c.Render(http.StatusOK, "editProduct.html", &templateData{Product: product})
+}
+
+func EditProduct(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+	productName := c.FormValue("product_name")
+	productQuantity := c.FormValue("product_quantity")
+	minimumQuantity := c.FormValue("minimum_quantity")
+	truckID := c.FormValue("truck_id")
+	companyID := c.FormValue("company_id")
+
+	quantity, _ := strconv.Atoi(productQuantity)
+	minimum, _ := strconv.Atoi(minimumQuantity)
+	truckid, _ := strconv.Atoi(truckID)
+	companyid, _ := strconv.Atoi(companyID)
+
+	product, err := controllers.GetProduct(id)
+	if err != nil {
+		return c.String(http.StatusNotFound, err.Error())
+	}
+
+	product.ProductName = productName
+	product.ProductQuantity = quantity
+	product.MinimumQuantity = minimum
+	product.TruckID = truckid
+	product.CompanyID = companyid
+
+	err = controllers.UpdateProduct(product)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}

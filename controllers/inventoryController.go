@@ -125,6 +125,14 @@ func GetProduct(id int) (*models.Inventory, error) {
 	return product, nil
 }
 
+func UpdateProduct(p *models.Inventory) error {
+	db := config.DB()
+	if err := db.Save(p).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func DeleteProduct(id int) error {
 	product, err := GetProduct(id)
 	if err != nil {
@@ -133,7 +141,10 @@ func DeleteProduct(id int) error {
 	db := config.DB()
 
 	product.InventoryStatus = false
-	db.Save(product)
+	if err := db.Save(product).Error; err != nil {
+		return err
+	}
+
 	return nil
 }
 

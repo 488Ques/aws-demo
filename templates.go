@@ -9,6 +9,7 @@ import (
 type templateData struct {
 	IsAuthenticated bool
 	Inventory       *[]models.Inventory
+	Product         *models.Inventory
 }
 
 func addDefaultData(td *templateData, c echo.Context) error {

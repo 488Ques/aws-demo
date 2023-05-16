@@ -25,7 +25,7 @@ Inventory - ElectricCompany
                         <td>{{$p.ProductQuantity}}</td>
                         <td>{{$p.MinimumQuantity}}</td>
                         <td>
-                            <a href="#" style="margin-right: 0.2em;">Edit</a>
+                            <a href="/inventory/{{$p.ID}}" style="margin-right: 0.2em;">Edit</a>
                             <a onclick="deleteProduct('/inventory/{{$p.ID}}')">Delete</a>
                         </td>
                     </tr>

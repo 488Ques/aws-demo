@@ -19,7 +19,6 @@ func DatabaseInit() {
 	host := "localhost"
 	user := "root"
 	password := "12345678"
-	// dbName := "go_rest_api"
 	dbName := "db_electriccompany"
 	port := 3306
 
