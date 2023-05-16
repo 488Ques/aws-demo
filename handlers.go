@@ -59,6 +59,19 @@ func AddProduct(c echo.Context) error {
 	return c.Redirect(http.StatusSeeOther, "/inventory")
 }
 
+func DeleteProduct(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+	err = controllers.DeleteProduct(id)
+	if err != nil {
+		return c.String(http.StatusNotFound, err.Error())
+	}
+
+	return c.Redirect(http.StatusSeeOther, "/inventory")
+}
+
 func LoginUser(c echo.Context) error {
 	username := c.FormValue("username")
 	password := c.FormValue("password")

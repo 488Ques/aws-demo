@@ -114,6 +114,29 @@ func DeleteInventory(c echo.Context) error {
 	return c.JSON(http.StatusOK, response)
 }
 
+func GetProduct(id int) (*models.Inventory, error) {
+	product := new(models.Inventory)
+	db := config.DB()
+
+	if err := db.First(&product, id).Error; err != nil {
+		return nil, err
+	}
+
+	return product, nil
+}
+
+func DeleteProduct(id int) error {
+	product, err := GetProduct(id)
+	if err != nil {
+		return err
+	}
+	db := config.DB()
+
+	product.InventoryStatus = false
+	db.Save(product)
+	return nil
+}
+
 func AddProduct(p *models.Inventory) (int, error) {
 	db := config.DB()
 
@@ -128,7 +151,7 @@ func GetStaffInventory(staffID int) []models.Inventory {
 	db := config.DB()
 	products := []models.Inventory{}
 
-	db.Model(&models.Inventory{}).Joins("inner join staffs on staffs.truck_id = inventory.truck_id").Where("staffs.id = ?", staffID).Find(&products)
+	db.Model(&models.Inventory{}).Joins("inner join staffs on staffs.truck_id = inventory.truck_id").Where("staffs.id = ? AND inventory_status <> 0", staffID).Find(&products)
 
 	return products
 }

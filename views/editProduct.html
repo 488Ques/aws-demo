@@ -1,0 +1,41 @@
+{{define "title"}}
+Edit product - ElectricCompany
+{{end}}
+
+{{define "body"}}
+<main class="container">
+    <article>
+        <hgroup>
+            <h1>Edit product</h1>
+            <h2></h2>
+        </hgroup>
+        <form action="" method="POST">
+            <label for="product_name">
+                Product name
+                <input type="text" name="product_name" placeholder="Product name" required>
+            </label>
+            <div class="grid">
+                <label for="product_quantity">
+                    Product quantity
+                    <input type="text" name="product_quantity" placeholder="Product quantity" required>
+                </label>
+                <label for="minimum_quantity">
+                    Minimum quantity
+                    <input type="text" name="minimum_quantity" placeholder="Minimum quantity" required>
+                </label>
+            </div>
+            <div class="grid">
+                <label for="truck_id">
+                    Truck ID
+                    <input type="text" name="truck_id" placeholder="truck_id">
+                </label>
+                <label for="company_id">
+                    Company ID
+                    <input type="text" name="company_id" placeholder="Company ID">
+                </label>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </article>
+</main>
+{{end}}

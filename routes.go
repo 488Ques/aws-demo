@@ -47,6 +47,7 @@ func Routes(e *echo.Echo) {
 	inventoryRoute := e.Group("/inventory")
 	inventoryRoute.GET("/add", AddProductForm)
 	inventoryRoute.POST("/add", AddProduct)
+	inventoryRoute.DELETE("/:id", DeleteProduct)
 
 	// Company routes
 	// companyRoute := e.Group("/company")
