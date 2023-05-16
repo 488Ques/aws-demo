@@ -7,6 +7,7 @@ import (
 	"io"
 
 	"github.com/488Ques/aws-demo/config"
+	"github.com/488Ques/aws-demo/twilio_helper"
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -87,6 +88,9 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("Connected to database!")
+
+	// Twilio
+	twilio_helper.TwillioInit()
 
 	// Start server
 	e.Logger.Fatal(e.Start(":3000"))
