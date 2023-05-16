@@ -14,6 +14,8 @@ Inventory - ElectricCompany
                         <th scope="col">Product name</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Minimum quantity</th>
+                        <th scope="col">Company ID</th>
+                        <th scope="col">Truck ID</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -24,6 +26,8 @@ Inventory - ElectricCompany
                         <td>{{$p.ProductName}}</td>
                         <td>{{$p.ProductQuantity}}</td>
                         <td>{{$p.MinimumQuantity}}</td>
+                        <td>{{$p.CompanyID}}</td>
+                        <td>{{$p.TruckID}}</td>
                         <td>
                             <a href="/inventory/{{$p.ID}}" style="margin-right: 0.2em;">Edit</a>
                             <a onclick="deleteProduct('/inventory/{{$p.ID}}')">Delete</a>
